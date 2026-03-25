@@ -1,0 +1,18 @@
+{
+  "name": "polymarket-lp-screener",
+  "version": "1.0.0",
+  "description": "Polymarket LP Rewards Screener — identifies best liquidity provider opportunities",
+  "main": "src/screener.ts",
+  "scripts": {
+    "start": "ts-node src/screener.ts",
+    "build": "tsc"
+  },
+  "dependencies": {
+    "p-limit": "^6.0.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.0",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.0.0"
+  }
+}
