@@ -1,10 +1,10 @@
 # Polymarket LP Rewards Screener
 
-Analizza i mercati Polymarket per identificare le migliori opportunita di guadagno come liquidity provider (LP), distribuendo un budget fisso di USDC sui mercati che massimizzano le rewards giornaliere.
+Analyzes Polymarket markets to identify the best liquidity provider (LP) earning opportunities, distributing a fixed USDC budget across markets that maximize daily rewards.
 
-**Questo e esclusivamente un modulo di monitoraggio** — non piazza ordini, non interagisce con il wallet, non richiede chiavi private.
+**This is a monitoring-only tool** — it does not place orders, interact with any wallet, or require private keys.
 
-## Requisiti
+## Requirements
 
 - Node.js >= 18
 - pnpm
@@ -15,31 +15,31 @@ Analizza i mercati Polymarket per identificare le migliori opportunita di guadag
 pnpm install
 ```
 
-## Esecuzione singola
+## Usage
 
 ```bash
 npx ts-node src/screener.ts
 ```
 
-## Parametri configurabili
+## Configuration
 
-Modifica `src/config.ts`:
+Edit `src/config.ts`:
 
-| Parametro | Default | Descrizione |
+| Parameter | Default | Description |
 |---|---|---|
-| `BUDGET_USD` | 200 | Budget totale in USDC da allocare |
-| `MAX_MARKETS` | 10 | Numero massimo di mercati selezionati |
-| `MIN_DAILY_REWARDS` | 20.0 | Soglia minima di rewards/day per considerare un mercato |
-| `MIN_DAYS_TO_EXPIRY` | 3 | Scarta mercati che scadono entro N giorni |
-| `MIN_MIDPOINT` | 0.15 | Scarta mercati con probabilita troppo bassa |
-| `MAX_MIDPOINT` | 0.85 | Scarta mercati con probabilita troppo alta |
-| `CONCURRENCY_LIMIT` | 5 | Max chiamate API parallele alla CLOB |
+| `BUDGET_USD` | 200 | Total USDC budget to allocate |
+| `MAX_MARKETS` | 10 | Maximum number of selected markets |
+| `MIN_DAILY_REWARDS` | 20.0 | Minimum rewards/day threshold to consider a market |
+| `MIN_DAYS_TO_EXPIRY` | 3 | Discard markets expiring within N days |
+| `MIN_MIDPOINT` | 0.15 | Discard markets with probability too low |
+| `MAX_MIDPOINT` | 0.85 | Discard markets with probability too high |
+| `CONCURRENCY_LIMIT` | 5 | Max parallel API calls to the CLOB |
 
-## Logica di ranking
+## Ranking logic
 
-1. Ogni mercato viene valutato per **reward per dollaro investito** — mercati con meno competizione e piu rewards hanno punteggio piu alto
-2. Il budget viene allocato prima ai mercati piu efficienti (minSize per ciascuno)
-3. Il budget rimanente viene redistribuito massimizzando il **reward marginale** — ogni dollaro aggiuntivo va dove genera il massimo incremento di rewards
+1. Each market is scored by **reward per dollar invested** — markets with less competition and higher rewards score higher
+2. Budget is allocated first to the most efficient markets (minSize each)
+3. Remaining budget is redistributed by maximizing **marginal reward** — each additional dollar goes where it generates the highest reward increment
 
 ## Output
 
@@ -61,9 +61,9 @@ Modifica `src/config.ts`:
 ════════════════════════════════════════════════════════════════
 ```
 
-| Colonna | Descrizione |
+| Column | Description |
 |---|---|
-| Market | Nome del mercato (troncato) |
-| Alloc | Dollari allocati su questo mercato |
-| Rew/day | Rewards giornaliere stimate |
-| Competition | Livello di competizione: EMPTY/LOW/MED/HIGH con size totale |
+| Market | Market name (truncated) |
+| Alloc | Dollars allocated to this market |
+| Rew/day | Estimated daily rewards |
+| Competition | Competition level: EMPTY/LOW/MED/HIGH with total size |
