@@ -21,6 +21,11 @@ pnpm install
 npx ts-node src/screener.ts
 ```
 
+After each run the screener stays active and waits for input:
+
+- **R** — restart the screener
+- **Q** — quit
+
 ## Configuration
 
 Edit `src/config.ts`:

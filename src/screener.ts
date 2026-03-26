@@ -93,12 +93,45 @@ function printResults(allocated: AllocatedMarket[]): void {
   console.log();
 }
 
-async function main() {
+async function run() {
   const candidates = await fetchAndFilter();
   const scored = await analyzeOrderbooks(candidates);
   printDiagnostics(scored);
   const allocated = allocate(scored);
   printResults(allocated);
+}
+
+function waitForKey(): Promise<"r" | "q"> {
+  return new Promise((resolve) => {
+    console.log("Press R to restart or Q to quit.");
+    const { stdin } = process;
+    const wasRaw = stdin.isRaw;
+    if (stdin.isTTY) stdin.setRawMode(true);
+    stdin.resume();
+    const onData = (buf: Buffer) => {
+      const ch = buf.toString().toLowerCase();
+      if (ch === "r" || ch === "q") {
+        stdin.removeListener("data", onData);
+        if (stdin.isTTY) stdin.setRawMode(wasRaw ?? false);
+        stdin.pause();
+        resolve(ch);
+      }
+    };
+    stdin.on("data", onData);
+  });
+}
+
+async function main() {
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    await run();
+    const key = await waitForKey();
+    if (key === "q") {
+      console.log("Bye!");
+      process.exit(0);
+    }
+    console.log("\nRestarting...\n");
+  }
 }
 
 main().catch(err => {
