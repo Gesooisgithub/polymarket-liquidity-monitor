@@ -8,4 +8,4 @@ export const CONFIG = {
   CONCURRENCY_LIMIT: 5,
 
   CLOB_API: "https://clob.polymarket.com",
-} as const;
+};

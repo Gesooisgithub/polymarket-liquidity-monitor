@@ -1,3 +1,4 @@
+import * as readline from "readline";
 import { fetchAndFilter } from "./markets";
 import { analyzeOrderbooks } from "./clob";
 import { allocate } from "./allocator";
@@ -101,6 +102,23 @@ async function run() {
   printResults(allocated);
 }
 
+function promptBudget(currentBudget: number): Promise<number> {
+  return new Promise((resolve) => {
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    rl.question(`Enter budget in USD (press Enter for $${currentBudget}): `, (answer) => {
+      rl.close();
+      const trimmed = answer.trim();
+      if (!trimmed) return resolve(currentBudget);
+      const parsed = parseFloat(trimmed);
+      if (!isFinite(parsed) || parsed <= 0) {
+        console.log(`Invalid budget — keeping $${currentBudget}.`);
+        return resolve(currentBudget);
+      }
+      resolve(parsed);
+    });
+  });
+}
+
 function waitForKey(): Promise<"r" | "q"> {
   return new Promise((resolve) => {
     console.log("Press R to restart or Q to quit.");
@@ -124,6 +142,7 @@ function waitForKey(): Promise<"r" | "q"> {
 async function main() {
   // eslint-disable-next-line no-constant-condition
   while (true) {
+    CONFIG.BUDGET_USD = await promptBudget(CONFIG.BUDGET_USD);
     await run();
     const key = await waitForKey();
     if (key === "q") {
