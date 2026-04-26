@@ -1,4 +1,4 @@
-import { fetchAndFilter } from "./gamma";
+import { fetchAndFilter } from "./markets";
 import { analyzeOrderbooks } from "./clob";
 import { allocate } from "./allocator";
 import { CONFIG } from "./config";

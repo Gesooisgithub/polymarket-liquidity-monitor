@@ -7,6 +7,5 @@ export const CONFIG = {
   MAX_MIDPOINT: 0.85,
   CONCURRENCY_LIMIT: 5,
 
-  GAMMA_API: "https://gamma-api.polymarket.com",
   CLOB_API: "https://clob.polymarket.com",
 } as const;

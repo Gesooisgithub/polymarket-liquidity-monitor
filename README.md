@@ -4,6 +4,10 @@ Analyzes Polymarket markets to identify the best liquidity provider (LP) earning
 
 **This is a monitoring-only tool** — it does not place orders, interact with any wallet, or require private keys.
 
+## How it works
+
+The screener pulls only the markets that are **currently distributing rewards** from the CLOB `/sampling-markets` endpoint, instead of paginating through every reward-eligible market and filtering client-side. This makes each run significantly faster (only a few thousand markets vs. tens of thousands) and avoids wasting requests on markets without active reward configurations.
+
 ## Requirements
 
 - Node.js >= 18
@@ -32,10 +36,10 @@ Edit `src/config.ts`:
 
 | Parameter | Default | Description |
 |---|---|---|
-| `BUDGET_USD` | 200 | Total USDC budget to allocate |
+| `BUDGET_USD` | 100 | Total USDC budget to allocate |
 | `MAX_MARKETS` | 10 | Maximum number of selected markets |
 | `MIN_DAILY_REWARDS` | 20.0 | Minimum rewards/day threshold to consider a market |
-| `MIN_DAYS_TO_EXPIRY` | 3 | Discard markets expiring within N days |
+| `MIN_DAYS_TO_EXPIRY` | 5 | Discard markets expiring within N days |
 | `MIN_MIDPOINT` | 0.15 | Discard markets with probability too low |
 | `MAX_MIDPOINT` | 0.85 | Discard markets with probability too high |
 | `CONCURRENCY_LIMIT` | 5 | Max parallel API calls to the CLOB |
